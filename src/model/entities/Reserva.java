@@ -1,8 +1,10 @@
 package model.entities;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import model.exceptions.DominioException;
 
 public class Reserva {
 	
@@ -11,6 +13,9 @@ public class Reserva {
 	private Date checkOut;
 	
 	public Reserva(Integer numeroQuarto, Date checkIn, Date checkOut) {
+		if (!checkOut.after(checkIn)) {
+			throw new DominioException( "Erro na reserva: Check-out deve ter a data depois do check-in");
+		}
 		this.numeroQuarto = numeroQuarto;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -39,20 +44,19 @@ public class Reserva {
 		return	TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
 	}
 	
-	public String updateDatas(Date in, Date out) {
+	public void updateDatas(Date in, Date out)  {
 		
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "Erro na reserva: Data de atualização deve ser futura";
+			throw new DominioException( "Erro na reserva: Data de atualização deve ser futura");
 		}
 		if (!checkOut.after(checkIn)) {
-			return "Erro na reserva: Check-out deve ter a data depois do check-in";
+			throw new DominioException( "Erro na reserva: Check-out deve ter a data depois do check-in");
 		}
 		this.checkIn = in;
 		this.checkOut = out;
-		return null;
+		;
 	}
-	
 
 	@Override
 	public String toString() {
