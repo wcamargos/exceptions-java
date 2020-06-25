@@ -10,7 +10,7 @@ public class Program {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		
-		Produtos Tv = new Produtos();
+		Produtos Tv = new Produtos(null, 0, 0);
 		Tv.name = "TV";
 		Tv.price= 1200;
 		Tv.quantidade=5;
